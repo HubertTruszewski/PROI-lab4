@@ -141,6 +141,11 @@
   <ItemGroup>
     <ClCompile Include="ShapesApp.cpp" />
   </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\MyCollection\MyCollection.vcxproj">
+      <Project>{0a1508f2-5453-40d2-9092-7f3d99d9d67a}</Project>
+    </ProjectReference>
+  </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
   </ImportGroup>
