@@ -5,7 +5,7 @@
 
 static const double EPSILON = 0.1;
 
-bool Shape::operator>(const Shape& sh) const
+bool Shape::operator>(const Shape& sh) const noexcept
 {
 	double area1 = this->getArea();
 	double area2 = sh.getArea();
@@ -16,7 +16,12 @@ bool Shape::operator>(const Shape& sh) const
 	return false;
 }
 
-bool Shape::operator<(const Shape& sh) const
+bool Shape::operator>=(const Shape& sh) const noexcept
+{
+	return (*this == sh || *this > sh);
+}
+
+bool Shape::operator<(const Shape& sh) const noexcept
 {
 	double area1 = this->getArea();
 	double area2 = sh.getArea();
@@ -27,7 +32,12 @@ bool Shape::operator<(const Shape& sh) const
 	return false;
 }
 
-bool Shape::operator==(const Shape& sh) const
+bool Shape::operator<=(const Shape& sh) const noexcept
+{
+	return (*this == sh || *this < sh);
+}
+
+bool Shape::operator==(const Shape& sh) const noexcept
 {
 	double area1 = this->getArea();
 	double area2 = sh.getArea();
@@ -36,7 +46,7 @@ bool Shape::operator==(const Shape& sh) const
 	return false;
 }
 
-bool Shape::operator!=(const Shape& sh) const
+bool Shape::operator!=(const Shape& sh) const noexcept
 {
 	return !(*this == sh);
 }
@@ -44,17 +54,17 @@ bool Shape::operator!=(const Shape& sh) const
 Rectangle::Rectangle(double a, double b)
 {
 	if (a <= 0 || b <= 0)
-		throw std::out_of_range("Dimension can't be below or equal zero");
+		throw std::out_of_range("Dimensions can't be below or equal zero");
 	this->a = a;
 	this->b = b;
 }
 
-double Rectangle::getPerimeter() const
+double Rectangle::getPerimeter() const noexcept
 {
 	return 2 * (this->a + this->b);
 }
 
-double Rectangle::getArea() const
+double Rectangle::getArea() const noexcept
 {
 	return this->a * this->b;
 }
@@ -66,12 +76,12 @@ Circle::Circle(double R)
 	this->R = R;
 }
 
-double Circle::getPerimeter() const
+double Circle::getPerimeter() const noexcept
 {
 	return 2 * M_PI * this->R;
 }
 
-double Circle::getArea() const
+double Circle::getArea() const noexcept
 {
 	return M_PI * pow(this->R, 2);
 }
@@ -83,12 +93,12 @@ Square::Square(double a)
 	this->a = a;
 }
 
-double Square::getPerimeter() const
+double Square::getPerimeter() const noexcept
 {
 	return 4 * this->a;
 }
 
-double Square::getArea() const
+double Square::getArea() const noexcept
 {
 	return pow(this->a, 2);
 }
