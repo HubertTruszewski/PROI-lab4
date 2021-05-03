@@ -190,11 +190,21 @@ public:
 		this->append(value);
 	}
 
-	void removeFromList(size_t index)
+	T getElement(size_t index)
 	{
-		auto it = this->begin();
 		if (index + 1 > this->size())
 			throw std::invalid_argument("List has not element at this index");
+		auto it = this->begin();
+		for (size_t i = 0; i < index; ++i)
+			++it;
+		return *it;
+	}
+
+	void removeFromList(size_t index)
+	{
+		if (index + 1 > this->size())
+			throw std::invalid_argument("List has not element at this index");
+		auto it = this->begin();
 		for (size_t i = 0; i < index; ++i)
 			++it;
 		if (it.current->getPrev() == nullptr and it.current->getNext() != nullptr)
