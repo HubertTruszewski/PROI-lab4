@@ -54,6 +54,8 @@ public:
 	public:
 		T operator*() const
 		{
+			if (current == nullptr)
+				throw std::out_of_range("Iterator is out of range");
 			return (this->current)->getValue();
 		}
 		Iterator operator++()
@@ -108,49 +110,44 @@ public:
 		}
 		bool operator==(const Iterator& it) const
 		{
-			if (this->current == it.current)
-				return true;
-			return false;
+			if (this->reverse != it.reverse) 
+				return false;
+			if (this->current != it.current)
+				return false;
+			return true;
 		}
 		bool operator!=(const Iterator& it) const
 		{
 			return !(*this == it);
 		}
-		Iterator(const List& parent, bool reverse = false)
+		Iterator(const List& parent, Node* start_value, bool reverse = false)
 		{
 			this->reverse = reverse;
-			if (!reverse)
-			{
-				this->current = parent.first_node;
-			}
-			else
-			{
-				this->current = parent.last_node;
-			}
+			this->current = start_value;
 		}
 	};
 
 	Iterator begin() const
 	{
-		return Iterator(*this);
+		return Iterator(*this, this->first_node);
 	}
 
 	Iterator end() const
 	{
-		Iterator it(*this, true);
-		--it;
+		Iterator it(*this, this->last_node);
+		++it;
 		return it;
 	}
 
 	Iterator rbegin() const
 	{
-		return Iterator(*this, true);
+		return Iterator(*this, this->last_node, true);
 	}
 
 	Iterator rend() const
 	{
-		Iterator it(*this);
-		--it;
+		Iterator it(*this, this->first_node , true);
+		++it;
 		return it;
 	}
 
@@ -207,14 +204,14 @@ public:
 		auto it = this->begin();
 		for (size_t i = 0; i < index; ++i)
 			++it;
-		if (it.current->getPrev() == nullptr and it.current->getNext() != nullptr)
+		if (it.current->getPrev() == nullptr && it.current->getNext() != nullptr)
 		{
 			Node* temp = this->first_node;
 			this->first_node->getNext()->setPrev(nullptr);
 			this->first_node = it.current->getNext();
 			delete temp;
 		}
-		else if (it.current->getPrev() != nullptr and it.current->getNext() != nullptr)
+		else if (it.current->getPrev() != nullptr && it.current->getNext() != nullptr)
 		{
 			Node* temp = it.current;
 			temp->getPrev()->setNext(temp->getNext());

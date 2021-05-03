@@ -9,19 +9,18 @@ int main()
 	list.append(7);
 	list.append(8);
 	list.append(9);
-	auto it3 = list.begin();
-	
-	for (auto i : list)
+
+	auto it1 = list.begin();
+	auto it2 = list.end();
+
+	if (it1 != it2)
 	{
-		std::cout << i << std::endl;
+		std::cout << "OK";
 	}
-
-
-	list.removeFromList(4);
 	
-	for (auto i : list)
+	for (size_t i = 0; i < 5; i++)
 	{
-		std::cout << i << std::endl;
+		std::cout << "Na pozycji " << i << " jest " << list.getElement(i) << std::endl;
 	}
 
 	return 0;
