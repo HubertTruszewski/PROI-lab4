@@ -5,6 +5,11 @@
 
 static const double EPSILON = 0.1;
 
+std::string Shape::getName() const
+{
+	return this->name;
+}
+
 bool Shape::operator>(const Shape& sh) const noexcept
 {
 	double area1 = this->getArea();
@@ -55,6 +60,7 @@ Rectangle::Rectangle(double a, double b)
 {
 	if (a <= 0 || b <= 0)
 		throw std::out_of_range("Dimensions can't be below or equal zero");
+	this->name = "Rectangle";
 	this->a = a;
 	this->b = b;
 }
@@ -73,6 +79,7 @@ Circle::Circle(double R)
 {
 	if (R <= 0)
 		throw std::out_of_range("Dimension can't be below or equal zero");
+	this->name = "Circle";
 	this->R = R;
 }
 
@@ -90,6 +97,7 @@ Square::Square(double a)
 {
 	if (a <= 0)
 		throw std::out_of_range("Dimension can't be below or equal zero");
+	this->name = "Square";
 	this->a = a;
 }
 
@@ -101,4 +109,11 @@ double Square::getPerimeter() const noexcept
 double Square::getArea() const noexcept
 {
 	return pow(this->a, 2);
+}
+
+std::ostream& operator<<(std::ostream& stream, const Shape& sh)
+{
+	stream << "This is " << sh.getName() << ". Perimeter of this shape is " << sh.getPerimeter();
+	stream << " and area is " << sh.getArea();
+	return stream;
 }

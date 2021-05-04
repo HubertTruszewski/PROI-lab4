@@ -1,27 +1,25 @@
 #include <iostream>
+#include <vector>
 #include "../MyCollection/List.h"
+#include "../ShapesLib/ShapesLib.h"
 
 int main()
 {
-	List<int> list;
-	list.append(5);
-	list.append(6);
-	list.append(7);
-	list.append(8);
-	list.append(9);
+	List<Shape*> list;
 
-	auto it1 = list.begin();
-	auto it2 = list.end();
+	list.append(new Circle(6));
+	list.append(new Square(3));
+	list.append(new Rectangle(2, 6));
+	list.append(new Square(5));
+	list.append(new Rectangle(6, 7));
+	list.append(new Circle(2));
+	list.append(new Square(3));
 
-	if (it1 != it2)
+	for (auto i : list)
 	{
-		std::cout << "OK";
+		std::cout << *i << std::endl;
 	}
-	
-	for (size_t i = 0; i < 5; i++)
-	{
-		std::cout << "Na pozycji " << i << " jest " << list.getElement(i) << std::endl;
-	}
+
 
 	return 0;
 }

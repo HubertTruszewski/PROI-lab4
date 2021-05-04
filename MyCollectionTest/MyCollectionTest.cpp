@@ -52,6 +52,66 @@ namespace MyCollectionTest
 			Assert::IsTrue(list.isIn(3));
 			Assert::IsTrue(list.isIn(2));
 		}
+		TEST_METHOD(ListInsertIterator)
+		{
+			List<int> list;
+			auto it = list.begin();
+			list.insert(4, it);
+			Assert::AreEqual(list.size(), (size_t)1);
+			Assert::IsTrue(list.isIn(4));
+		}
+		TEST_METHOD(ListInsertIteratorOutOfList)
+		{
+			List<int> list;
+			list += 6;
+			auto it = list.begin();
+			++it;
+			++it;
+			auto func = [&] { list.insert(5, it); };
+			Assert::ExpectException<std::invalid_argument>(func);
+		}
+
+		TEST_METHOD(ListInsertIndex)
+		{
+			List<int> list;
+			list.insert(4, 0);
+			Assert::AreEqual(list.size(), (size_t)1);
+			Assert::IsTrue(list.isIn(4));
+			Assert::AreEqual(list.getElement(0), 4);
+		}
+		TEST_METHOD(ListInsertBadIndex)
+		{
+			List<int> list;
+			list += 9;
+			list += 7;
+			auto func = [&] { list.insert(5, 3); };
+			Assert::ExpectException<std::invalid_argument>(func);
+		}
+		TEST_METHOD(ListRemoveIterator)
+		{
+			List<int> list;
+			list += 4;
+			list += 9;
+			list += 8;
+			Assert::AreEqual(list.size(), (size_t)3);
+			Assert::IsTrue(list.isIn(9));
+			auto it = list.begin();
+			++it;
+			list.removeFromList(it);
+			Assert::AreEqual(list.size(), (size_t)2);
+			Assert::IsFalse(list.isIn(9));
+		}
+		TEST_METHOD(ListRemoveIteratorOutOfRange)
+		{
+			List<int> list;
+			list += 8;
+			list += 5;
+			auto it = list.begin();
+			++it;
+			++it;
+			auto func = [&] { list.removeFromList(it); };
+			Assert::ExpectException<std::invalid_argument>(func);
+		}
 		TEST_METHOD(ListRemove)
 		{
 			List<int> list;

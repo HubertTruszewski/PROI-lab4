@@ -60,51 +60,63 @@ public:
 		}
 		Iterator operator++()
 		{
-			if (!this->reverse)
+			if (this->current != nullptr)
 			{
-				this->current = current->getNext();
-			}
-			else
-			{
-				this->current = current->getPrev();
+				if (!this->reverse)
+				{
+					this->current = current->getNext();
+				}
+				else
+				{
+					this->current = current->getPrev();
+				}
 			}
 			return *this;
 		}
 		Iterator operator++(int)
 		{
 			Iterator temp = *this;
-			if (!this->reverse)
+			if (this->current != nullptr)
 			{
-				this->current = current->getNext();
-			}
-			else
-			{
-				this->current = current->getPrev();
+				if (!this->reverse)
+				{
+					this->current = current->getNext();
+				}
+				else
+				{
+					this->current = current->getPrev();
+				}
 			}
 			return temp;
 		}
 		Iterator operator--()
 		{
-			if (!this->reverse)
+			if (this->current != nullptr)
 			{
-				this->current = current->getPrev();
-			}
-			else
-			{
-				this->current = current->getNext();
+				if (!this->reverse)
+				{
+					this->current = current->getPrev();
+				}
+				else
+				{
+					this->current = current->getNext();
+				}
 			}
 			return *this;
 		}
 		Iterator operator--(int)
 		{
 			Iterator temp = *this;
-			if (!this->reverse)
+			if (this->current != nullptr)
 			{
-				this->current = current->getPrev();
-			}
-			else
-			{
-				this->current = current->getNext();
+				if (!this->reverse)
+				{
+					this->current = current->getPrev();
+				}
+				else
+				{
+					this->current = current->getNext();
+				}
 			}
 			return temp;
 		}
@@ -197,13 +209,48 @@ public:
 		return *it;
 	}
 
-	void removeFromList(size_t index)
+	void insert(const T& value, const Iterator& it)
 	{
-		if (index + 1 > this->size())
-			throw std::invalid_argument("List has not element at this index");
-		auto it = this->begin();
-		for (size_t i = 0; i < index; ++i)
-			++it;
+		if (it.current == nullptr && this->list_size != 0)
+			throw std::invalid_argument("Iterator in out of list");
+		if (it.current == this->last_node || it.current == nullptr)
+		{
+			this->append(value);
+		}
+		else if (it.current == this->first_node)
+		{
+			Node* newNode = new Node(value, nullptr, this->first_node->getNext());
+			this->first_node->setPrev(newNode);
+			this->first_node = newNode;
+		}
+		else
+		{
+			Node* newNode = new Node(value, it.current->getPrev(), it.current->getNext());
+			it.current->setPrev(newNode);
+			it.current->getPrev()->setNext(newNode);
+		}
+	}
+
+	void insert(const T& value, const size_t index)
+	{
+		if (index > this->size())
+		{
+			throw std::invalid_argument("List assignment index out of range");
+		}
+		else
+		{
+			auto it = this->begin();
+			for (size_t i = 0; i < index; ++i)
+			{
+				++it;
+			}
+			this->insert(value, it);
+		}
+	}
+	void removeFromList(const Iterator& it)
+	{
+		if (it.current == nullptr)
+			throw std::invalid_argument("Iterator in out of list");
 		if (it.current->getPrev() == nullptr && it.current->getNext() != nullptr)
 		{
 			Node* temp = this->first_node;
@@ -229,6 +276,15 @@ public:
 		--this->list_size;
 	}
 
+	void removeFromList(size_t index)
+	{
+		if (index + 1 > this->size())
+			throw std::invalid_argument("List has not element at this index");
+		auto it = this->begin();
+		for (size_t i = 0; i < index; ++i)
+			++it;
+		this->removeFromList(it);
+	}
 
 	List()
 	{
@@ -239,11 +295,25 @@ public:
 	~List()
 	{
 		Node* temp = this->first_node;
-		while (temp != nullptr)
+		while (temp != 0)
 		{
 			Node* newTemp = temp->getNext();
 			delete temp;
 			temp = newTemp;
 		}
+		this->first_node = nullptr;
+		this->last_node = nullptr;
 	}
 };
+
+
+template<class T>
+std::ostream& operator<<(std::ostream& stream, const List<T>& list)
+{
+	for (auto i : list)
+	{
+		stream << i << std::endl;
+	}
+	return stream;
+}
+

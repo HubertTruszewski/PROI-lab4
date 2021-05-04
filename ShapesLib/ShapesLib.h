@@ -1,8 +1,13 @@
 #pragma once
+#include <iostream>
+#include <string>
 
 class Shape
 {
+protected:
+	std::string name;
 public:
+	std::string getName() const;
 	virtual double getPerimeter() const = 0;
 	virtual double getArea() const = 0;
 	bool operator>(const Shape& sh) const noexcept;
@@ -43,3 +48,5 @@ public:
 	virtual double getPerimeter() const noexcept;
 	virtual double getArea() const noexcept;
 };
+
+std::ostream& operator<<(std::ostream& stream, const Shape& sh);
