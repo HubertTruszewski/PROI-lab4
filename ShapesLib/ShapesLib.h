@@ -4,18 +4,17 @@
 
 class Shape
 {
-protected:
-	std::string name;
 public:
-	std::string getName() const;
 	virtual double getPerimeter() const = 0;
 	virtual double getArea() const = 0;
+	virtual void print(std::ostream& stream) const = 0;
 	bool operator>(const Shape& sh) const noexcept;
 	bool operator>=(const Shape& sh) const noexcept;
 	bool operator<(const Shape& sh) const noexcept;
 	bool operator<=(const Shape& sh) const noexcept;
 	bool operator==(const Shape& sh) const noexcept;
 	bool operator!=(const Shape& sh) const noexcept;
+	virtual ~Shape() = default;
 };
 
 class Rectangle : public Shape
@@ -27,6 +26,7 @@ public:
 	Rectangle(double a, double b);
 	virtual double getPerimeter() const noexcept;
 	virtual double getArea() const noexcept;
+	virtual void print(std::ostream& stream) const;
 };
 
 class Circle : public Shape
@@ -37,6 +37,7 @@ public:
 	Circle(double R);
 	virtual double getPerimeter() const noexcept;
 	virtual double getArea() const noexcept;
+	virtual void print(std::ostream& stream) const;
 };
 
 class Square : public Shape
@@ -47,6 +48,7 @@ public:
 	Square(double a);
 	virtual double getPerimeter() const noexcept;
 	virtual double getArea() const noexcept;
+	virtual void print(std::ostream& stream) const;
 };
 
 std::ostream& operator<<(std::ostream& stream, const Shape& sh);

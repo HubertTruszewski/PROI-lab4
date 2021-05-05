@@ -5,10 +5,6 @@
 
 static const double EPSILON = 0.1;
 
-std::string Shape::getName() const
-{
-	return this->name;
-}
 
 bool Shape::operator>(const Shape& sh) const noexcept
 {
@@ -60,7 +56,6 @@ Rectangle::Rectangle(double a, double b)
 {
 	if (a <= 0 || b <= 0)
 		throw std::out_of_range("Dimensions can't be below or equal zero");
-	this->name = "Rectangle";
 	this->a = a;
 	this->b = b;
 }
@@ -75,11 +70,16 @@ double Rectangle::getArea() const noexcept
 	return this->a * this->b;
 }
 
+void Rectangle::print(std::ostream& stream) const
+{
+	stream << "This is Rectangle. The perimeter is ";
+	stream << this->getPerimeter() << " and the area is " << this->getArea();
+}
+
 Circle::Circle(double R)
 {
 	if (R <= 0)
 		throw std::out_of_range("Dimension can't be below or equal zero");
-	this->name = "Circle";
 	this->R = R;
 }
 
@@ -93,11 +93,16 @@ double Circle::getArea() const noexcept
 	return M_PI * pow(this->R, 2);
 }
 
+void Circle::print(std::ostream& stream) const
+{
+	stream << "This is Circle. The perimeter is ";
+	stream << this->getPerimeter() << " and the area is " << this->getArea();
+}
+
 Square::Square(double a)
 {
 	if (a <= 0)
 		throw std::out_of_range("Dimension can't be below or equal zero");
-	this->name = "Square";
 	this->a = a;
 }
 
@@ -111,9 +116,14 @@ double Square::getArea() const noexcept
 	return pow(this->a, 2);
 }
 
+void Square::print(std::ostream& stream) const
+{
+	stream << "This is Square. The perimeter is ";
+	stream << this->getPerimeter() << " and the area is " << this->getArea();
+}
+
 std::ostream& operator<<(std::ostream& stream, const Shape& sh)
 {
-	stream << "This is " << sh.getName() << ". Perimeter of this shape is " << sh.getPerimeter();
-	stream << " and area is " << sh.getArea();
+	sh.print(stream);
 	return stream;
 }

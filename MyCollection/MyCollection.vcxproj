@@ -152,6 +152,15 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClInclude Include="List.h" />
+    <ClInclude Include="ShapeCollection.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="ShapeCollection.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\ShapesLib\ShapesLib.vcxproj">
+      <Project>{458675d3-69ae-48ab-9b8b-12cbde98008b}</Project>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
