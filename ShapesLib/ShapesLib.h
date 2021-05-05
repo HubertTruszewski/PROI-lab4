@@ -27,6 +27,7 @@ public:
 	virtual double getPerimeter() const noexcept;
 	virtual double getArea() const noexcept;
 	virtual void print(std::ostream& stream) const;
+	virtual ~Rectangle() = default;
 };
 
 class Circle : public Shape
@@ -38,6 +39,7 @@ public:
 	virtual double getPerimeter() const noexcept;
 	virtual double getArea() const noexcept;
 	virtual void print(std::ostream& stream) const;
+	virtual ~Circle() = default;
 };
 
 class Square : public Shape
@@ -49,6 +51,7 @@ public:
 	virtual double getPerimeter() const noexcept;
 	virtual double getArea() const noexcept;
 	virtual void print(std::ostream& stream) const;
+	virtual ~Square() = default;
 };
 
 std::ostream& operator<<(std::ostream& stream, const Shape& sh);
