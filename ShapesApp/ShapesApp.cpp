@@ -8,12 +8,19 @@ int main()
 {
 
 	ShapeCollection sh;
-	sh.append(new Circle(5));
+	sh.append(new Square(5));
 	sh.append(new Circle(6));
-	sh.append(new Circle(3));
+	sh.append(new Rectangle(3, 5));
+	sh += new Rectangle(1, 5);
+	sh += new Square(4);
+	sh += new Circle(3);
 	
-	std::cout << sh;
+	for (auto i : sh)
+	{
+		std::cout << *i << std::endl;
+	}
 
+	std::cout << sh;
 
 	return 0;
 }

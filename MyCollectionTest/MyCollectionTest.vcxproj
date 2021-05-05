@@ -156,7 +156,8 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="MyCollectionTest.cpp" />
+    <ClCompile Include="ListTest.cpp" />
+    <ClCompile Include="ShapeCollection.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\MyCollection\MyCollection.vcxproj">

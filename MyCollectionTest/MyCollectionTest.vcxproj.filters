@@ -15,7 +15,10 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="MyCollectionTest.cpp">
+    <ClCompile Include="ListTest.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="ShapeCollection.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

@@ -11,9 +11,9 @@ inline std::wstring Microsoft::VisualStudio::CppUnitTestFramework::ToString<List
 	return result;
 }
 
-namespace MyCollectionTest
+namespace ListTest
 {
-	TEST_CLASS(MyCollectionTest)
+	TEST_CLASS(ListTest)
 	{
 	public:
 		TEST_METHOD(ListConstructor)
