@@ -27,7 +27,8 @@ namespace ListTest
 			List<int> list;
 			list.append(3);
 			Assert::AreEqual(list.size(), (size_t)1);
-			Assert::AreEqual(list.getElement(0), 3);
+			auto it = list.begin();
+			Assert::AreEqual(*it, 3);
 			Assert::IsTrue(list.isIn(3));
 		}
 		TEST_METHOD(ListAppend2)
@@ -36,8 +37,10 @@ namespace ListTest
 			list.append(2);
 			list.append(3);
 			Assert::AreEqual(list.size(), (size_t)2);
-			Assert::AreEqual(list.getElement(0), 2);
-			Assert::AreEqual(list.getElement(1), 3);
+			auto it = list.begin();
+			Assert::AreEqual(*it, 2);
+			++it;
+			Assert::AreEqual(*it, 3);
 			Assert::IsTrue(list.isIn(3));
 			Assert::IsTrue(list.isIn(2));
 		}
@@ -47,8 +50,10 @@ namespace ListTest
 			list.append(2);
 			list += 3;
 			Assert::AreEqual(list.size(), (size_t)2);
-			Assert::AreEqual(list.getElement(0), 2);
-			Assert::AreEqual(list.getElement(1), 3);
+			auto it = list.begin();
+			Assert::AreEqual(*it, 2);
+			++it;
+			Assert::AreEqual(*it, 3);
 			Assert::IsTrue(list.isIn(3));
 			Assert::IsTrue(list.isIn(2));
 		}
@@ -71,22 +76,6 @@ namespace ListTest
 			Assert::ExpectException<std::invalid_argument>(func);
 		}
 
-		TEST_METHOD(ListInsertIndex)
-		{
-			List<int> list;
-			list.insert(4, 0);
-			Assert::AreEqual(list.size(), (size_t)1);
-			Assert::IsTrue(list.isIn(4));
-			Assert::AreEqual(list.getElement(0), 4);
-		}
-		TEST_METHOD(ListInsertBadIndex)
-		{
-			List<int> list;
-			list += 9;
-			list += 7;
-			auto func = [&] { list.insert(5, 3); };
-			Assert::ExpectException<std::invalid_argument>(func);
-		}
 		TEST_METHOD(ListRemoveIterator)
 		{
 			List<int> list;
@@ -112,7 +101,7 @@ namespace ListTest
 			auto func = [&] { list.removeFromList(it); };
 			Assert::ExpectException<std::invalid_argument>(func);
 		}
-		TEST_METHOD(ListRemove)
+		TEST_METHOD(ListRemoveIterator2)
 		{
 			List<int> list;
 			list.append(4);
@@ -122,40 +111,15 @@ namespace ListTest
 			Assert::IsTrue(list.isIn(4));
 			Assert::IsTrue(list.isIn(3));
 			Assert::IsTrue(list.isIn(7));
-			list.removeFromList(1);
+			auto it = list.begin();
+			++it;
+			list.removeFromList(it);
 			Assert::AreEqual(list.size(), (size_t)2);
 			Assert::IsTrue(list.isIn(4));
 			Assert::IsFalse(list.isIn(3));
 			Assert::IsTrue(list.isIn(7));
 		}
-		TEST_METHOD(ListRemoveBadIndex)
-		{
-			List<int> list;
-			list += 3;
-			list += 5;
-			list += 9;
-			auto func = [&] { list.removeFromList(5); };
-			Assert::ExpectException<std::invalid_argument>(func);
-		}
-		TEST_METHOD(ListGetElement)
-		{
-			List<int> list;
-			list.append(4);
-			list.append(7);
-			list.append(2);
-			Assert::AreEqual(list.getElement(0), 4);
-			Assert::AreEqual(list.getElement(1), 7);
-			Assert::AreEqual(list.getElement(2), 2);
-		}
-		TEST_METHOD(ListGetElementBadIndex)
-		{
-			List<int> list;
-			list.append(4);
-			list.append(7);
-			list.append(2);
-			auto func = [&] { list.getElement(5); };
-			Assert::ExpectException<std::invalid_argument>(func);
-		}
+
 		TEST_METHOD(ListSize)
 		{
 			List<int> list;
@@ -164,7 +128,9 @@ namespace ListTest
 			Assert::AreEqual(list.size(), (size_t)1);
 			list += 32;
 			Assert::AreEqual(list.size(), (size_t)2);
-			list.removeFromList(0);
+			auto it = list.begin();
+			++it;
+			list.removeFromList(it);
 			Assert::AreEqual(list.size(), (size_t)1);
 		}
 		TEST_METHOD(IteratorBegin)

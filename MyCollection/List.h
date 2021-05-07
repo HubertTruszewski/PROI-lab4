@@ -177,16 +177,6 @@ public:
 		this->append(value);
 	}
 
-	T getElement(size_t index)
-	{
-		if (index + 1 > this->size())
-			throw std::invalid_argument("List has not element at this index");
-		auto it = this->begin();
-		for (size_t i = 0; i < index; ++i)
-			++it;
-		return *it;
-	}
-
 	void insert(const T& value, const Iterator& it)
 	{
 		if (it.current == nullptr && this->list_size != 0)
@@ -209,22 +199,6 @@ public:
 		}
 	}
 
-	void insert(const T& value, const size_t index)
-	{
-		if (index > this->size())
-		{
-			throw std::invalid_argument("List assignment index out of range");
-		}
-		else
-		{
-			auto it = this->begin();
-			for (size_t i = 0; i < index; ++i)
-			{
-				++it;
-			}
-			this->insert(value, it);
-		}
-	}
 	void removeFromList(const Iterator& it)
 	{
 		if (it.current == nullptr)
@@ -252,16 +226,6 @@ public:
 		}
 
 		--this->list_size;
-	}
-
-	void removeFromList(size_t index)
-	{
-		if (index + 1 > this->size())
-			throw std::invalid_argument("List has not element at this index");
-		auto it = this->begin();
-		for (size_t i = 0; i < index; ++i)
-			++it;
-		this->removeFromList(it);
 	}
 
 	List()

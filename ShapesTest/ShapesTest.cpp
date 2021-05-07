@@ -18,18 +18,18 @@ namespace ShapesTest
 		}
 		TEST_METHOD(RectangleConstructorNegativeDismension)
 		{
-			auto func = [] { Rectangle(-2, 3); };
-			auto func2 = [] { Rectangle(2, -3); };
-			auto func3 = [] { Rectangle(-2, -3); };
+			auto func = [] { auto r = Rectangle(-2, 3); };
+			auto func2 = [] { auto r = Rectangle(2, -3); };
+			auto func3 = [] { auto r = Rectangle(-2, -3); };
 			Assert::ExpectException<std::out_of_range>(func);
 			Assert::ExpectException<std::out_of_range>(func2);
 			Assert::ExpectException<std::out_of_range>(func3);
 		}
 		TEST_METHOD(RectangleConstructorZeroAsDismesion)
 		{
-			auto func = [] { Rectangle(2, 0); };
-			auto func2 = [] { Rectangle(0, 2); };
-			auto func3 = [] { Rectangle(0, 0); };
+			auto func = [] { auto r = Rectangle(2, 0); };
+			auto func2 = [] { auto r = Rectangle(0, 2); };
+			auto func3 = [] { auto r = Rectangle(0, 0); };
 			Assert::ExpectException<std::out_of_range>(func);
 			Assert::ExpectException<std::out_of_range>(func2);
 			Assert::ExpectException<std::out_of_range>(func3);
@@ -42,12 +42,12 @@ namespace ShapesTest
 		}
 		TEST_METHOD(CircleConstructorNegativeDismension)
 		{
-			auto func = [] { Circle(-3); };
+			auto func = [] { auto c = Circle(-3); };
 			Assert::ExpectException<std::out_of_range>(func);
 		}
 		TEST_METHOD(CircleConstructorZeroDismension)
 		{
-			auto func = [] { Circle(0); };
+			auto func = [] { auto c = Circle(0); };
 			Assert::ExpectException<std::out_of_range>(func);
 		}
 		TEST_METHOD(SquareConstructor)
@@ -58,12 +58,12 @@ namespace ShapesTest
 		}
 		TEST_METHOD(SquareConstructorNegativeDismension)
 		{
-			auto func = [] { Square(-2); };
+			auto func = [] { auto s = Square(-2); };
 			Assert::ExpectException<std::out_of_range>(func);
 		}
 		TEST_METHOD(SquareConstructorZeroDismension)
 		{
-			auto func = [] { Square(0); };
+			auto func = [] { auto s = Square(0); };
 			Assert::ExpectException<std::out_of_range>(func);
 		}
 		TEST_METHOD(RectanglePerimeter1)
