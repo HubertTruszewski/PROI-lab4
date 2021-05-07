@@ -28,7 +28,12 @@ public:
 		friend List;
 	private:
 		Node* current;
-		bool reverse;
+		const List<T>* parent;
+		Iterator(const List<T>* parent, Node* first_value)
+		{
+			this->current = first_value;
+			this->parent = parent;
+		}
 	public:
 		T operator*() const
 		{
@@ -38,70 +43,42 @@ public:
 		}
 		Iterator operator++()
 		{
-			if (this->current != nullptr)
-			{
-				if (!this->reverse)
-				{
-					this->current = current->next;
-				}
-				else
-				{
-					this->current = current->prev;
-				}
-			}
+			if (this->current == nullptr)
+				throw std::out_of_range("Iterator is out of range!");
+			this->current = current->next;
 			return *this;
 		}
 		Iterator operator++(int)
 		{
 			Iterator temp = *this;
-			if (this->current != nullptr)
-			{
-				if (!this->reverse)
-				{
-					this->current = current->next;
-				}
-				else
-				{
-					this->current = current->prev;
-				}
-			}
+			if (this->current == nullptr)
+				throw std::out_of_range("Iterator is out of range!");
+			this->current = current->next;
 			return temp;
 		}
 		Iterator operator--()
 		{
-			if (this->current != nullptr)
-			{
-				if (!this->reverse)
-				{
-					this->current = current->prev;
-				}
-				else
-				{
-					this->current = current->next;
-				}
-			}
+			if (this->current == parent->first_node)
+				throw std::out_of_range("This is first node!");
+			if (this->current == nullptr)
+				this->current = parent->last_node;
+			else
+				this->current = current->prev;
 			return *this;
 		}
 		Iterator operator--(int)
 		{
 			Iterator temp = *this;
-			if (this->current != nullptr)
-			{
-				if (!this->reverse)
-				{
-					this->current = current->prev;
-				}
-				else
-				{
-					this->current = current->next;
-				}
-			}
+			if (this->current == parent->first_node)
+				throw std::out_of_range("This is first node!");
+			if (this->current == nullptr)
+				this->current = parent->last_node;
+			else
+				this->current = current->prev;
 			return temp;
 		}
 		bool operator==(const Iterator& it) const
 		{
-			if (this->reverse != it.reverse) 
-				return false;
 			if (this->current != it.current)
 				return false;
 			return true;
@@ -110,33 +87,94 @@ public:
 		{
 			return !(*this == it);
 		}
-		Iterator(const List& parent, Node* start_value, bool reverse = false)
+	};
+
+	class ReverseIterator
+	{
+		friend List;
+	private:
+		Node* current;
+		const List<T>* parent;
+		ReverseIterator(const List<T>* parent, Node* first_value)
 		{
-			this->reverse = reverse;
-			this->current = start_value;
+			this->current = first_value;
+			this->parent = parent;
+		}
+	public:
+		T operator*() const
+		{
+			if (current == nullptr)
+				throw std::out_of_range("Iterator is out of range");
+			return (this->current)->value;
+		}
+		ReverseIterator operator++()
+		{
+			if (this->current == nullptr)
+				throw std::out_of_range("Iterator is out of range!");
+			this->current = current->prev;
+			return *this;
+		}
+		ReverseIterator operator++(int)
+		{
+			ReverseIterator temp = *this;
+			if (this->current == nullptr)
+				throw std::out_of_range("Iterator is out of range!");
+			this->current = current->prev;
+			return temp;
+		}
+		ReverseIterator operator--()
+		{
+			if (this->current == parent->last_node)
+				throw std::out_of_range("This is last node!");
+			if (this->current == nullptr)
+				this->current = parent->first_node;
+			else
+				this->current = current->next;
+			return *this;
+		}
+		ReverseIterator operator--(int)
+		{
+			ReverseIterator temp = *this;
+			if (this->current == parent->last_node)
+				throw std::out_of_range("This is last node!");
+			if (this->current == nullptr)
+				this->current = parent->first_node;
+			else
+				this->current = current->next;
+			return temp;
+		}
+		bool operator==(const ReverseIterator& it) const
+		{
+			if (this->current != it.current)
+				return false;
+			return true;
+		}
+		bool operator!=(const ReverseIterator& it) const
+		{
+			return !(*this == it);
 		}
 	};
 
 	Iterator begin() const
 	{
-		return Iterator(*this, this->first_node);
+		return Iterator(this, this->first_node);
 	}
 
 	Iterator end() const
 	{
-		Iterator it(*this, this->last_node);
+		Iterator it(this, this->last_node);
 		++it;
 		return it;
 	}
 
-	Iterator rbegin() const
+	ReverseIterator rbegin() const
 	{
-		return Iterator(*this, this->last_node, true);
+		return ReverseIterator(this, this->last_node);
 	}
 
-	Iterator rend() const
+	ReverseIterator rend() const
 	{
-		Iterator it(*this, this->first_node , true);
+		ReverseIterator it(this, this->first_node);
 		++it;
 		return it;
 	}

@@ -71,9 +71,8 @@ namespace ListTest
 			list += 6;
 			auto it = list.begin();
 			++it;
-			++it;
-			auto func = [&] { list.insert(5, it); };
-			Assert::ExpectException<std::invalid_argument>(func);
+			auto func = [&] { ++it; };
+			Assert::ExpectException<std::out_of_range>(func);
 		}
 
 		TEST_METHOD(ListRemoveIterator)
@@ -271,6 +270,22 @@ namespace ListTest
 			++it;
 			Assert::AreEqual(*it, 5);
 		}
+		TEST_METHOD(ReverseIteratorAsteriskOperator)
+		{
+			List<int> list;
+			list.append(4);
+			list.append(3);
+			list.append(7);
+			list.append(5);
+			auto it = list.rbegin();
+			Assert::AreEqual(*it, 5);
+			++it;
+			Assert::AreEqual(*it, 7);
+			++it;
+			Assert::AreEqual(*it, 3);
+			++it;
+			Assert::AreEqual(*it, 4);
+		}
 		TEST_METHOD(IteratorOutOfRange)
 		{
 			List<int> list;
@@ -281,6 +296,77 @@ namespace ListTest
 			it++;
 			auto func = [&] { *it; };
 			Assert::ExpectException<std::out_of_range>(func);
+		}
+		TEST_METHOD(ReverseIteratorOutOfRange)
+		{
+			List<int> list;
+			list += 5;
+			list += 3;
+			auto it = list.rbegin();
+			it++;
+			it++;
+			auto func = [&] { *it; };
+			Assert::ExpectException<std::out_of_range>(func);
+		}
+		TEST_METHOD(IteratorDecrementFirstElement)
+		{
+			List<int> list;
+			list += 5;
+			list += 3;
+			auto it = list.begin();
+			auto func = [&] { it--; };
+			Assert::ExpectException<std::out_of_range>(func);
+		}
+		TEST_METHOD(ReverseIteratorDecrementFirstElement)
+		{
+			List<int> list;
+			list += 5;
+			list += 3;
+			auto it = list.rbegin();
+			auto func = [&] { it--; };
+			Assert::ExpectException<std::out_of_range>(func);
+		}
+		TEST_METHOD(IteratorIncrementOutOfRange)
+		{
+			List<int> list;
+			list += 3;
+			list += 4;
+			auto it = list.begin();
+			++it;
+			++it;
+			auto func = [&] { ++it;  };
+			Assert::ExpectException<std::out_of_range>(func);
+		}
+		TEST_METHOD(ReverseIteratorIncrementOutOfRange)
+		{
+			List<int> list;
+			list += 3;
+			list += 4;
+			auto it = list.rbegin();
+			++it;
+			++it;
+			auto func = [&] { ++it;  };
+			Assert::ExpectException<std::out_of_range>(func);
+		}
+		TEST_METHOD(IteratorEndDecrement)
+		{
+			List<int> list;
+			list += 4;
+			list += 5;
+			auto it = list.begin();
+			++it;
+			++it;
+			Assert::AreEqual(*(--it), 5);
+		}
+		TEST_METHOD(ReverseIteratorEndDecrement)
+		{
+			List<int> list;
+			list += 4;
+			list += 5;
+			auto it = list.rbegin();
+			++it;
+			++it;
+			Assert::AreEqual(*(--it), 4);
 		}
 	};
 }
