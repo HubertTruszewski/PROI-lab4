@@ -7,34 +7,11 @@ class List
 {
 private:
 	size_t list_size;
-	class Node
+	struct Node
 	{
-	private:
 		Node* next;
 		Node* prev;
 		T value;
-	public:
-		Node* getPrev() const
-		{
-			return this->prev;
-		}
-		Node* getNext() const
-		{
-			return this->next;
-		}
-		T getValue() const
-		{
-			return this->value;
-		}
-
-		void setPrev(Node* node)
-		{
-			this->prev = node;
-		}
-		void setNext(Node* node)
-		{
-			this->next = node;
-		}
 		Node(T value, Node* prev = nullptr, Node* next = nullptr)
 		{
 			this->value = value;
@@ -57,7 +34,7 @@ public:
 		{
 			if (current == nullptr)
 				throw std::out_of_range("Iterator is out of range");
-			return (this->current)->getValue();
+			return (this->current)->value;
 		}
 		Iterator operator++()
 		{
@@ -65,11 +42,11 @@ public:
 			{
 				if (!this->reverse)
 				{
-					this->current = current->getNext();
+					this->current = current->next;
 				}
 				else
 				{
-					this->current = current->getPrev();
+					this->current = current->prev;
 				}
 			}
 			return *this;
@@ -81,11 +58,11 @@ public:
 			{
 				if (!this->reverse)
 				{
-					this->current = current->getNext();
+					this->current = current->next;
 				}
 				else
 				{
-					this->current = current->getPrev();
+					this->current = current->prev;
 				}
 			}
 			return temp;
@@ -96,11 +73,11 @@ public:
 			{
 				if (!this->reverse)
 				{
-					this->current = current->getPrev();
+					this->current = current->prev;
 				}
 				else
 				{
-					this->current = current->getNext();
+					this->current = current->next;
 				}
 			}
 			return *this;
@@ -112,11 +89,11 @@ public:
 			{
 				if (!this->reverse)
 				{
-					this->current = current->getPrev();
+					this->current = current->prev;
 				}
 				else
 				{
-					this->current = current->getNext();
+					this->current = current->next;
 				}
 			}
 			return temp;
@@ -188,8 +165,8 @@ public:
 		}
 		if (this->last_node != nullptr)
 		{
-			this->last_node->setNext(newNode);
-			newNode->setPrev(this->last_node);
+			this->last_node->next = newNode;
+			newNode->prev = this->last_node;
 		}
 		this->last_node = newNode;
 		++this->list_size;
@@ -220,15 +197,15 @@ public:
 		}
 		else if (it.current == this->first_node)
 		{
-			Node* newNode = new Node(value, nullptr, this->first_node->getNext());
-			this->first_node->setPrev(newNode);
+			Node* newNode = new Node(value, nullptr, this->first_node->next);
+			this->first_node->prev = newNode;
 			this->first_node = newNode;
 		}
 		else
 		{
-			Node* newNode = new Node(value, it.current->getPrev(), it.current->getNext());
-			it.current->setPrev(newNode);
-			it.current->getPrev()->setNext(newNode);
+			Node* newNode = new Node(value, it.current->prev, it.current->next);
+			it.current->prev = newNode;
+			it.current->prev->next = newNode;
 		}
 	}
 
@@ -252,25 +229,25 @@ public:
 	{
 		if (it.current == nullptr)
 			throw std::invalid_argument("Iterator in out of list");
-		if (it.current->getPrev() == nullptr && it.current->getNext() != nullptr)
+		if (it.current->prev == nullptr && it.current->next != nullptr)
 		{
 			Node* temp = this->first_node;
-			this->first_node->getNext()->setPrev(nullptr);
-			this->first_node = it.current->getNext();
+			this->first_node->next->prev = nullptr;
+			this->first_node = it.current->next;
 			delete temp;
 		}
-		else if (it.current->getPrev() != nullptr && it.current->getNext() != nullptr)
+		else if (it.current->prev != nullptr && it.current->next != nullptr)
 		{
 			Node* temp = it.current;
-			temp->getPrev()->setNext(temp->getNext());
-			temp->getNext()->setPrev(temp->getPrev());
+			temp->prev->next = temp->next;
+			temp->next->prev = temp->prev;
 			delete temp;
 		}
 		else
 		{
 			Node* temp = this->last_node;
-			this->last_node->getPrev()->setNext(nullptr);
-			this->last_node = it.current->getPrev();
+			this->last_node->prev->next = nullptr;
+			this->last_node = it.current->prev;
 			delete temp;
 		}
 
@@ -298,7 +275,7 @@ public:
 		Node* temp = this->first_node;
 		while (temp != 0)
 		{
-			Node* newTemp = temp->getNext();
+			Node* newTemp = temp->next;
 			delete temp;
 			temp = newTemp;
 		}
