@@ -297,17 +297,6 @@ namespace ListTest
 			auto func = [&] { *it; };
 			Assert::ExpectException<std::out_of_range>(func);
 		}
-		TEST_METHOD(ReverseIteratorOutOfRange)
-		{
-			List<int> list;
-			list += 5;
-			list += 3;
-			auto it = list.rbegin();
-			it++;
-			it++;
-			auto func = [&] { *it; };
-			Assert::ExpectException<std::out_of_range>(func);
-		}
 		TEST_METHOD(IteratorDecrementFirstElement)
 		{
 			List<int> list;
@@ -367,6 +356,30 @@ namespace ListTest
 			++it;
 			++it;
 			Assert::AreEqual(*(--it), 4);
+		}
+		TEST_METHOD(ReverseIteratorEqualOperator)
+		{
+			List<int> list;
+			list += 3;
+			list += 4;
+			list += 5;
+			auto it = list.rbegin();
+			auto it2 = list.rbegin();
+			auto it3 = list.rend();
+			Assert::IsTrue(it == it2);
+			Assert::IsFalse(it == it3);
+		}
+		TEST_METHOD(ReverseIteratorNotEqualOperator)
+		{
+			List<int> list;
+			list += 3;
+			list += 4;
+			list += 5;
+			auto it = list.rbegin();
+			auto it2 = list.rbegin();
+			auto it3 = list.rend();
+			Assert::IsTrue(it != it3);
+			Assert::IsFalse(it != it2);
 		}
 	};
 }
